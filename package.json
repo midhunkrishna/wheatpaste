@@ -1,0 +1,20 @@
+{
+  "name": "annotator-extension",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Midhun Krishna <kr1shn4.m1dhun@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "scripts": {
+    "dev": "webpack --watch --mode development",
+    "start": "webpack-dev-server --config './webpack.config.js'"
+  }
+}

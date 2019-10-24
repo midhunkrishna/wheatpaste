@@ -9,7 +9,7 @@
             "http://*/*",
             "https://*/*"
       ],
-      "js": ["main.js"],
+      "js": ["./bin/content.bundle.js"],
       "run_at": "document_end"
     }
   ]
