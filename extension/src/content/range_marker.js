@@ -1,4 +1,5 @@
 import Utils from "./../utils";
+import DefaultStrategy from "./marking/default_strategy";
 
 class RangeMarker {
   constructor(serializedRange) {
@@ -13,7 +14,7 @@ class RangeMarker {
     );
 
     if (startNode && endNode && commonAncestor) {
-      Utils.markAll({
+      const strategy = new DefaultStrategy({
         startNode: startNode,
         startOffset: this.range.startOffset,
         endNode: endNode,
@@ -24,6 +25,8 @@ class RangeMarker {
           endNode: endNode
         })
       });
+
+      strategy.markAll();
     } else {
       console.log("try css path or id");
     }

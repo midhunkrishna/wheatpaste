@@ -1,11 +1,15 @@
 const Utils = {
-  wrap: (node, wrapper) => {
+  markClasslist: ["wheat-paste-highlight"],
+
+  wrap: (node, wrapper = "mark", classList = Utils.markClasslist) => {
     // wrap
     // - node: html node object
     // - wrapper: text representation of node, eg: 'div', 'mark'
 
     const parent = node.parentNode;
     const realizedWrapper = document.createElement(wrapper);
+
+    realizedWrapper.setAttribute("class", classList.join(" "));
     const nextSibling = node.nextElementSibling;
 
     if (nextSibling) {
@@ -18,18 +22,21 @@ const Utils = {
     return wrapper;
   },
 
-  markAll: ({ startNode, endNode, startOffset, endOffset, inBetweeners }) => {
-    // debugger;
-    window.a = {
-      startNode,
-      endNode,
-      inBetweeners
-    };
-    console.log("running markall");
+  rangeWrap: ({
+    startNode,
+    startOffset,
+    endNode,
+    endOffset,
+    classList = Utils.markClasslist,
+    wrapper = "mark"
+  }) => {
+    const range = document.createRange();
+    range.setStart(startNode, startOffset);
+    range.setEnd(endNode, endOffset);
 
-    inBetweeners.map(textNode => {
-      Utils.wrap(textNode, "mark");
-    });
+    const realizedWrapper = document.createElement(wrapper);
+    realizedWrapper.setAttribute("class", classList.join(" "));
+    range.surroundContents(realizedWrapper);
   },
 
   getInlineNodes: ({ within, startNode, endNode }) => {
