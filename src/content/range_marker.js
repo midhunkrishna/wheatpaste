@@ -13,10 +13,16 @@ class RangeMarker {
     );
 
     if (startNode && endNode && commonAncestor) {
-      Utils.getInlineNodes({
-        within: commonAncestor,
+      Utils.markAll({
         startNode: startNode,
-        endNode: endNode
+        startOffset: this.range.startOffset,
+        endNode: endNode,
+        endOffset: this.range.endOffset,
+        inBetweeners: Utils.getInlineNodes({
+          within: commonAncestor,
+          startNode: startNode,
+          endNode: endNode
+        })
       });
     } else {
       console.log("try css path or id");

@@ -1,34 +1,69 @@
 const Utils = {
+  wrap: (node, wrapper) => {
+    // wrap
+    // - node: html node object
+    // - wrapper: text representation of node, eg: 'div', 'mark'
+
+    const parent = node.parentNode;
+    const realizedWrapper = document.createElement(wrapper);
+    const nextSibling = node.nextElementSibling;
+
+    if (nextSibling) {
+      parent.insertBefore(realizedWrapper, nextSibling);
+    } else {
+      parent.insertBefore(realizedWrapper, null);
+    }
+
+    realizedWrapper.appendChild(node);
+    return wrapper;
+  },
+
+  markAll: ({ startNode, endNode, startOffset, endOffset, inBetweeners }) => {
+    // debugger;
+    window.a = {
+      startNode,
+      endNode,
+      inBetweeners
+    };
+    console.log("running markall");
+
+    inBetweeners.map(textNode => {
+      Utils.wrap(textNode, "mark");
+    });
+  },
+
   getInlineNodes: ({ within, startNode, endNode }) => {
     let pastStartNode = false,
       reachedEndNode = false,
       nodeList = [];
 
-    const whiteListed = nodeType => {
-      console.log(nodeType);
-      return true;
+    const whiteListed = node => {
+      console.log(node);
+      return node.nodeName === "#text" && node.textContent.trim() !== "";
     };
 
     const fetchNodes = ({ within }) => {
-      if (within === startNode) {
+      if (within == startNode) {
         pastStartNode = true;
-      } else if (within === endNode) {
+      } else if (within == endNode) {
         reachedEndNode = true;
-      } else if (within.nodeType === Node.TEXT_NODE && whiteListed(within)) {
+      } else if (whiteListed(within)) {
         if (pastStartNode && !reachedEndNode) {
           nodeList.push(within);
         }
       } else {
-        for (let i = 0; !reachedEndNode && i < within.childNodes.length; i++) {
+        for (
+          let i = 0, len = within.childNodes.length;
+          !reachedEndNode && i < len;
+          ++i
+        ) {
           fetchNodes({ within: within.childNodes[i] });
         }
       }
     };
 
-    if (!reachedEndNode) {
-      fetchNodes({ within });
-    }
-
+    fetchNodes({ within });
+    window.nl = nodeList;
     return nodeList;
   },
 

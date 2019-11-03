@@ -12,13 +12,21 @@ class SelectionSerializer {
   }
 
   startContainer() {
-    const parentNode = this.range.startContainer.parentNode;
-    return this._extractNodeInformation(parentNode);
+    return {
+      ...this._extractNodeInformation(this.range.startContainer),
+      parentNode: this._extractNodeInformation(
+        this.range.startContainer.parentNode
+      )
+    };
   }
 
   endContainer() {
-    const parentNode = this.range.endContainer.parentNode;
-    return this._extractNodeInformation(parentNode);
+    return {
+      ...this._extractNodeInformation(this.range.endContainer),
+      parentNode: this._extractNodeInformation(
+        this.range.endContainer.parentNode
+      )
+    };
   }
 
   text() {
@@ -43,9 +51,14 @@ class SelectionSerializer {
     }
   }
 
+  _classList(node) {
+    // #text.classList = undefined
+    return node.classList || [];
+  }
+
   _extractNodeInformation(node) {
     const classList = [];
-    node.classList.forEach(item => {
+    this._classList(node).forEach(item => {
       classList.push(item);
     });
 
